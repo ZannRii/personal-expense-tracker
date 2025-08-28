@@ -5,6 +5,9 @@ module org.example.personalexpensetracker {
     requires com.zaxxer.hikari;
     requires static lombok;
     requires spring.tx;
+    requires mysql.connector.j;
+    requires java.desktop;
+    requires java.sql;
 
 
     opens org.example.personalexpensetracker to javafx.fxml;

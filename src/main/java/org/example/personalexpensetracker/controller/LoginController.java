@@ -1,11 +1,13 @@
 package org.example.personalexpensetracker.controller;
 
+import com.mysql.cj.Session;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,23 +26,66 @@ public class LoginController {
     private Button loginBtn;
 
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
 
     @FXML
     private Button signupBtn;
+    private int id ;
+    private User user;
     private UserDao userDao = new UserDao();
-    @FXML
-    void loginBtnClicked(ActionEvent event) {
-        System.out.println("login clicked");
-        System.out.println("UserName"+ emailField.getText());
-        System.out.println("Password"+ passwordField.getText());
-        String email = emailField.getText();
-        User user = userDao.findByEmail(email);
-        if (emailField.getText().equals(user.getEmail()) && passwordField.getText().equals(user.getPassword())){
-            CommonUtil.setResizable(true);
-            CommonUtil.getPrimaryStage().setScene(new Scene(CommonUtil.loadFxmlLayout("home.fxml")));
-        }
+    private int loginAttempts = 0;
+    private final int MAX_ATTEMPTS = 3;
+
+@FXML
+void loginBtnClicked(ActionEvent event) throws IOException {
+    String email = emailField.getText().trim();
+    String password = passwordField.getText().trim();
+
+    if (email.isEmpty() || password.isEmpty()) {
+        new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.WARNING,
+                "Email and password cannot be empty!"
+        ).showAndWait();
+        return;
     }
+
+    User user = userDao.findByEmail(email);
+
+    if (user == null || !password.equals(user.getPassword())) {
+        loginAttempts++; // increment failed attempts
+        if (loginAttempts >= MAX_ATTEMPTS) {
+            new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.ERROR,
+                    "Maximum login attempts exceeded! Application will close."
+            ).showAndWait();
+            System.exit(0); // close the application
+        } else {
+            new javafx.scene.control.Alert(
+                    javafx.scene.control.Alert.AlertType.WARNING,
+                    "Invalid email or password! Attempt " + loginAttempts + " of " + MAX_ATTEMPTS
+            ).showAndWait();
+        }
+        return;
+    }
+
+    // Reset attempts on successful login
+    loginAttempts = 0;
+
+    // Create session and load home
+    org.example.personalexpensetracker.entity.Session session = new org.example.personalexpensetracker.entity.Session();
+    session.setUser(user);
+
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/personalexpensetracker/common/home.fxml"));
+    Parent root = loader.load();
+    HomeController homeController = loader.getController();
+    CommonUtil.getPrimaryStage().setScene(new Scene(root));
+    CommonUtil.setResizable(false);
+    CommonUtil.setHomeController(homeController);
+    homeController.loadIncomeChart();
+    homeController.loadExpenseChart();
+    homeController.loadSummaryData();
+}
+
 
     @FXML
     void signupBtnClicked(ActionEvent event) throws IOException {

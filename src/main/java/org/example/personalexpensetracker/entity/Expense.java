@@ -8,19 +8,20 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Setter
-public class User {
+public class Expense {
 
+    private int income_id;
     private int user_id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private String address;
+    private int category_id;
+    private int payment_method_id;
+    private Double amount;
+    private LocalDateTime date;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
     private String create_user;
     private String update_user;
-    public User(){
+    public Expense(){
 
     }
+
 }

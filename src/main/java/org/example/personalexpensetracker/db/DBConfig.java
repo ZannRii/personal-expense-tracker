@@ -8,7 +8,7 @@ public class DBConfig {
     private static JdbcTemplate jdbcTemplate;
     static{
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/personal_tracker");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/personal_expense_tracker");
         config.setUsername("root");
         config.setPassword("121050#@");
         HikariDataSource dataSource = new HikariDataSource(config);

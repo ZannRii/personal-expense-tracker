@@ -8,19 +8,16 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Setter
-public class User {
-
-    private int user_id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private String address;
+public class PaymentMethod {
+    private int payment_method_id;
+    private String  method_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
     private String create_user;
     private String update_user;
-    public User(){
+    public PaymentMethod(){
 
     }
+
 }
+

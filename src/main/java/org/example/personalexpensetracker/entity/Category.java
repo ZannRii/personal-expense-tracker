@@ -8,19 +8,19 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Setter
-public class User {
+public class Category {
 
-    private int user_id;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private String address;
+    private int category_id;
+    private String category_name;
     private LocalDateTime create_time;
     private LocalDateTime update_time;
+    private String type;
     private String create_user;
     private String update_user;
-    public User(){
+
+    public Category(){
 
     }
+
 }
+

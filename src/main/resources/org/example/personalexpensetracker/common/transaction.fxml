@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.personalexpensetracker.controller.TransactionController">
+
+    <top>
+        <HBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        <Button fx:id="allBtn" text="All" />
+            <Button fx:id="incomeBtn" text="Income" />
+            <Button fx:id="expenseBtn" text="Expense" />
+            <Label text="From:" />
+            <DatePicker fx:id="fromDate" prefHeight="25.0" prefWidth="127.0" />
+            <Label text="To:" />
+            <DatePicker fx:id="toDate" prefHeight="25.0" prefWidth="113.0" />
+            <Button fx:id="filterBtn" text="Filter" />
+         <Button fx:id="backBtn" mnemonicParsing="false" onAction="#backBtnClicked" text="Back" />
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="transactionTable" prefHeight="400.0" prefWidth="600.0">
+            <columns>
+                <TableColumn fx:id="typeCol" prefWidth="114.00002801418304" text="Type" />
+                <TableColumn fx:id="amountCol" prefWidth="137.33332061767578" text="Amount" />
+                <TableColumn fx:id="categoryCol" prefWidth="135.99998474121094" text="Category" />
+                <TableColumn fx:id="dateCol" prefWidth="118.66665649414062" text="Date" />
+            <TableColumn fx:id="actionCol" prefWidth="126.66668701171875" text="Action " />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

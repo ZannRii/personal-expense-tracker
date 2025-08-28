@@ -3,17 +3,19 @@ package org.example.personalexpensetracker.common;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
+import org.example.personalexpensetracker.controller.HomeController;
 
 import java.io.IOException;
 
 public class CommonUtil {
+    @Getter
     private static Stage primaryStage;
     public CommonUtil(Stage primaryStage){
         this.primaryStage = primaryStage;
     }
-    public static Stage getPrimaryStage(){
-        return primaryStage;
-    }
+
     public static void setResizable(boolean isResizable){
         primaryStage.setResizable(isResizable);
     }
@@ -26,4 +28,9 @@ public class CommonUtil {
             throw new RuntimeException(e);
         }
     }
+    @Getter
+    @Setter
+    private static HomeController homeController;
+
+
 }

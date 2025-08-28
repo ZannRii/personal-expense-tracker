@@ -23,6 +23,12 @@ public class SignUpController {
     private TextField passwordTextField;
 
     @FXML
+    private TextField addressTextField;
+
+    @FXML
+    private TextField phoneTextField;
+
+    @FXML
     private Button saveBtn;
     private User user;
     private UserDao userDao = new UserDao();
@@ -32,19 +38,59 @@ public class SignUpController {
         ((Stage)cancelBtn.getScene().getWindow()).close();
     }
 
-    @FXML
-    void saveBtnClicked(ActionEvent event) {
-       user = new User();
-        user.setName(nameTextField.getText());
-        user.setPassword(passwordTextField.getText());
-        user.setEmail(emailTextField.getText());
-        if (user.getName() == null || user.getPassword() == null || user.getEmail() == null){
-            ((Stage)saveBtn.getScene().getWindow()).close();
-        }else {
-            userDao.insert(user);
-        }
-        ((Stage)saveBtn.getScene().getWindow()).close();
 
+@FXML
+void saveBtnClicked(ActionEvent event) {
+    String username = nameTextField.getText().trim();
+    String password = passwordTextField.getText().trim();
+    String email = emailTextField.getText().trim();
+    String phone = phoneTextField.getText().trim();
+    String address = addressTextField.getText().trim();
+
+    if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+        new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.WARNING,
+                "Username, password, and email are required!"
+        ).showAndWait();
+        return;
     }
+
+    // Email validation using regex
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    if (!email.matches(emailRegex)) {
+        new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.WARNING,
+                "Invalid email format!"
+        ).showAndWait();
+        return;
+    }
+
+    user = new User();
+    user.setUsername(username);
+    user.setPassword(password);
+    user.setEmail(email);
+    user.setPhone(phone);
+    user.setAddress(address);
+
+    try {
+        userDao.insert(user);
+
+        new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.INFORMATION,
+                "Sign-up successful!"
+        ).showAndWait();
+
+        ((Stage) saveBtn.getScene().getWindow()).close();
+
+    } catch (Exception e) {
+        // Show error alert if DB insert fails
+        new javafx.scene.control.Alert(
+                javafx.scene.control.Alert.AlertType.ERROR,
+                "Failed to sign up! " + e.getMessage()
+        ).showAndWait();
+    }
+}
+
+
 
 }
